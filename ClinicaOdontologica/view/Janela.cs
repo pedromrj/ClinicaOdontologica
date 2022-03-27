@@ -58,12 +58,18 @@ namespace ClinicaOdontologica.view
                     break;
                 case 1:
                     AddPaciente();
+                    Console.WriteLine("Paciente adicionado com sucesso!");
+                    Console.ReadLine();
                     break;
                 case 2:
                     AddProcedimento();
+                    Console.WriteLine("Procedimento adicionado com sucesso!");
+                    Console.ReadLine();
                     break;
                 case 3:
                     AddAtendimento();
+                    Console.WriteLine("Atendimento adicionado com sucesso!");
+                    Console.ReadLine();
                     break;
                 case 4:
                     ObterAtendimentos();
@@ -194,7 +200,13 @@ namespace ClinicaOdontologica.view
                     
                     servico.ObterProcedimentos(codigo);
 
-                    procedimentos.Add(codigo);
+                    if (procedimentos.Contains(codigo))
+                    {
+                        Console.WriteLine("Não é possivel adicionar procedimentos duplicados!");
+                    } else
+                    {
+                        procedimentos.Add(codigo);
+                    }
 
                     Console.WriteLine("Gostaria de adicionar outro procedimento (1 - Sim ou 0 - Não): ");
                     int? proximo = int.Parse(Console.ReadLine());
@@ -207,8 +219,6 @@ namespace ClinicaOdontologica.view
                     {
                         throw new FormatException();
                     }
-
-                    break;
                 } catch (FormatException ex)
                 {
                     Console.WriteLine("Comando invalido ou codigo invalido!");
@@ -218,8 +228,8 @@ namespace ClinicaOdontologica.view
                 {
                     Console.WriteLine("Procedimento não encontrado!");
                     Console.ReadLine();
-                }
-                
+                } 
+
             }
 
             servico.AddAtendimento(cpf, procedimentos);
@@ -263,11 +273,12 @@ namespace ClinicaOdontologica.view
 
                     Paciente pessoa = servico.ObterPaciente(cpf);
 
-                    pessoa.GetAtendimento().ForEach(atendimento =>
+                    pessoa.ObterAtendimento().ForEach(atendimento =>
                     {
                         MostrarAtendimento(atendimento);
                     });
 
+                    Console.WriteLine("Todos os Atendimento foram listados!");
                     Console.ReadLine();
                     break;
                 }
@@ -289,13 +300,30 @@ namespace ClinicaOdontologica.view
         {
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("Data do atendimento | Código | Nome | Preço");
-            atendimento.GetProcedimentos().ForEach(procedimento =>
+            atendimento.ObterProcedimentos().ForEach(procedimento =>
             {
+
                 Console.WriteLine($"{atendimento.Data} | {procedimento.Codigo} | {procedimento.Nome} | {procedimento.Preco}");
             });
-            Console.WriteLine($"Total: {atendimento.GetValorTotal()}");
+
+            ObterValorTotal(atendimento);
             Console.WriteLine("-------------------------------------------");
 
         }
+
+        public void ObterValorTotal(Atendimento atendimento)
+        {
+            if (typeof(AtendimentoConvencional).IsInstanceOfType(atendimento))
+            {
+                AtendimentoConvencional convencional = (AtendimentoConvencional) atendimento;
+                Console.WriteLine($"Total: {convencional.ObterValorTotal()} | Sem Desconto");
+
+            } else
+            {
+                AtendimentoFidelidade fidelidade = (AtendimentoFidelidade) atendimento;
+                Console.WriteLine($"Total: {fidelidade.ObterValorTotal()} | Desconto de 2%");
+            }
+        }
+
     }
 }

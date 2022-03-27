@@ -30,17 +30,17 @@ namespace ClinicaOdontologica.services
         public void AddAtendimento(String cpf, List<int> codigos)
         {
             Paciente paciente = ObterPaciente(cpf);
-            Atendimento atendimento = getTipoAtendimento(paciente.Fidelidade);
+            Atendimento atendimento = ObterTipoAtendimento(paciente.Fidelidade);
 
             codigos.ForEach(codigo =>
             {
                 atendimento.AddProcedimento(ObterProcedimentos(codigo));
             });
 
-            paciente.GetAtendimento().Add(atendimento);
+            paciente.ObterAtendimento().Add(atendimento);
         }
 
-        private Atendimento getTipoAtendimento(bool tipo)
+        private Atendimento ObterTipoAtendimento(bool tipo)
         {
             if (tipo)
             {

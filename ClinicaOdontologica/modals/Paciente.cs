@@ -4,9 +4,7 @@ namespace ClinicaOdontologica.modals
 {
     public class Paciente : Pessoa
     {
-        protected List<Atendimento> atendimentos;
-
-        public bool Fidelidade { get; set; }
+        private List<Atendimento> atendimentos;
 
         public Paciente(string cpf, string nome, string telefone, bool fidelidade) : base(cpf, nome, telefone, fidelidade)
         {
@@ -18,7 +16,7 @@ namespace ClinicaOdontologica.modals
             this.atendimentos.Add(atendimento);
         }
 
-        public List<Atendimento> GetAtendimento()
+        public List<Atendimento> ObterAtendimento()
         {
             return this.atendimentos;
         }

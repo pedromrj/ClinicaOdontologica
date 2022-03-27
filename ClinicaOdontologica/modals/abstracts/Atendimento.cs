@@ -17,12 +17,12 @@
             this.procedimentos.Add(procedimento);
         }
 
-        public List<Procedimento> GetProcedimentos()
+        public List<Procedimento> ObterProcedimentos()
         {
             return this.procedimentos;
         }
 
-        public double GetValorTotal()
+        public double ObterValorTotal()
         {
             double valorTotal = 0;
             this.procedimentos.ForEach(p => valorTotal += p.Preco);

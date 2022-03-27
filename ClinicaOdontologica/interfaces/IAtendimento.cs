@@ -2,6 +2,6 @@
 {
     public interface IAtendimento
     {
-        public double GetValorTotal();
+        public double ObterValorTotal();
     }
 }
