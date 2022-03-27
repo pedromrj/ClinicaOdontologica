@@ -1,0 +1,15 @@
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\bin\Debug\net6.0\ClinicaOdontologica.exe
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\bin\Debug\net6.0\ClinicaOdontologica.deps.json
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\bin\Debug\net6.0\ClinicaOdontologica.runtimeconfig.json
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\bin\Debug\net6.0\ClinicaOdontologica.dll
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\bin\Debug\net6.0\ClinicaOdontologica.pdb
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\ClinicaOdontologica.csproj.AssemblyReference.cache
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\ClinicaOdontologica.GeneratedMSBuildEditorConfig.editorconfig
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\ClinicaOdontologica.AssemblyInfoInputs.cache
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\ClinicaOdontologica.AssemblyInfo.cs
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\ClinicaOdontologica.csproj.CoreCompileInputs.cache
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\ClinicaOdontologica.dll
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\refint\ClinicaOdontologica.dll
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\ClinicaOdontologica.pdb
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\ClinicaOdontologica.genruntimeconfig.cache
+D:\dotnet\ClinicaOdontologica\ClinicaOdontologica\obj\Debug\net6.0\ref\ClinicaOdontologica.dll
