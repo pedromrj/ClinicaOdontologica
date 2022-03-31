@@ -1,6 +1,7 @@
 ﻿using ClinicaOdontologica.modals.abstracts;
 using ClinicaOdontologica.modals;
 using ClinicaOdontologica.exceptions;
+using System.Text.RegularExpressions;
 
 namespace ClinicaOdontologica.services
 {
@@ -18,6 +19,11 @@ namespace ClinicaOdontologica.services
 
         public void AddPaciente(Paciente paciente)
         {
+            if (!Regex.IsMatch(paciente.Cpf, @"^[0-9]+$") || !Regex.IsMatch(paciente.Telefone, @"^[0-9]+$"))
+            {
+                throw new ParametroInvalidoException("Campo cpf ou telefone é invalido!");
+                
+            }
             this.pessoas.Add(paciente);
         }
 
@@ -30,7 +36,7 @@ namespace ClinicaOdontologica.services
         public void AddAtendimento(String cpf, List<int> codigos)
         {
             Paciente paciente = ObterPaciente(cpf);
-            Atendimento atendimento = ObterTipoAtendimento(paciente.Fidelidade);
+            Atendimento atendimento = new AtendimentoConvencional();
 
             codigos.ForEach(codigo =>
             {
@@ -38,15 +44,6 @@ namespace ClinicaOdontologica.services
             });
 
             paciente.ObterAtendimento().Add(atendimento);
-        }
-
-        private Atendimento ObterTipoAtendimento(bool tipo)
-        {
-            if (tipo)
-            {
-                return new AtendimentoFidelidade();
-            }
-            return new AtendimentoConvencional();
         }
 
         public Procedimento ObterProcedimentos(int codigo)

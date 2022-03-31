@@ -58,18 +58,12 @@ namespace ClinicaOdontologica.view
                     break;
                 case 1:
                     AddPaciente();
-                    Console.WriteLine("Paciente adicionado com sucesso!");
-                    Console.ReadLine();
                     break;
                 case 2:
                     AddProcedimento();
-                    Console.WriteLine("Procedimento adicionado com sucesso!");
-                    Console.ReadLine();
                     break;
                 case 3:
                     AddAtendimento();
-                    Console.WriteLine("Atendimento adicionado com sucesso!");
-                    Console.ReadLine();
                     break;
                 case 4:
                     ObterAtendimentos();
@@ -81,51 +75,27 @@ namespace ClinicaOdontologica.view
         }
 
         public void AddPaciente()
-        {
-            Console.Clear();
-            Console.WriteLine("||||||Adicionar Paciente||||||");
-            Console.WriteLine("Qual o CPF do paciente apenas numeros: ");
-            string? cpf = Console.ReadLine();
-            Console.WriteLine("Qual o nome do paciente: ");
-            string? nome = Console.ReadLine();
-            Console.WriteLine("Qual o telefone do paciente: ");
-            string? telefone = Console.ReadLine();
-
-            bool fidelidade = ObterTipo();
-
-            servico.AddPaciente(new Paciente(cpf, nome, telefone, fidelidade));
-        }
-
-        public bool ObterTipo()
-        {
-            bool fidelidade = false;
-            while ( true)
+        {   
+            try
             {
-                try
-                {
-                    Console.WriteLine("Qual é o tipo do paciente (0 - Convencional ou 1 - Fidelidade)");
-                    int tipo = int.Parse(Console.ReadLine());
-
-                    if (tipo > 1 || tipo < 0)
-                    {
-                        throw new FormatException();
-                    }
-
-                    if (tipo.Equals(1))
-                    {
-                        fidelidade = true;
-                    }
-
-                    break;
-                }
-                catch (FormatException ex)
-                {
-                    Console.WriteLine("Comando invalido!");
-                    Console.ReadLine();
-              }
-            }
-
-            return fidelidade;
+                Console.Clear();
+                Console.WriteLine("||||||Adicionar Paciente||||||");
+                Console.WriteLine("Qual o CPF do paciente apenas numeros: ");
+                string? cpf = Console.ReadLine();
+                Console.WriteLine("Qual o nome do paciente: ");
+                string? nome = Console.ReadLine();
+                Console.WriteLine("Qual o telefone do paciente: ");
+                string? telefone = Console.ReadLine();
+                servico.AddPaciente(new Paciente(cpf, nome, telefone));
+                Console.WriteLine("Paciente adicionado com sucesso!");
+                Console.ReadLine();
+            } catch (ParametroInvalidoException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+                AddPaciente();
+            } 
+            
         }
 
         public void AddProcedimento()
@@ -137,6 +107,8 @@ namespace ClinicaOdontologica.view
             double preco = ObterPreco();
 
             servico.AddProcedimento(new Procedimento(nome,preco));
+            Console.WriteLine("Procedimento adicionado com sucesso!");
+            Console.ReadLine();
         }
 
         public double ObterPreco()
@@ -188,13 +160,16 @@ namespace ClinicaOdontologica.view
             Console.WriteLine("||||||Adicionar Atendimento||||||");
             MostrarPaciente();
             string cpf = PreencherCpf();
-            MostrarProcedimentos();
+
             List<int> procedimentos = new List<int>();
             
             while( true)
             {
                 try
                 {
+                    Console.Clear();
+                    Console.WriteLine("||||||Adicionar Atendimento||||||");
+                    MostrarProcedimentos();
                     Console.WriteLine("Digite o codigo do procedimento que deseja: ");
                     int codigo = int.Parse(Console.ReadLine());
                     
@@ -233,6 +208,8 @@ namespace ClinicaOdontologica.view
             }
 
             servico.AddAtendimento(cpf, procedimentos);
+            Console.WriteLine("Atendimento adicionado com sucesso!");
+            Console.ReadLine();
         }
 
         public void MostrarPaciente()
@@ -273,6 +250,10 @@ namespace ClinicaOdontologica.view
 
                     Paciente pessoa = servico.ObterPaciente(cpf);
 
+                    Console.Clear();
+
+                    Console.WriteLine($"Lista de atendimento para o CPF: {cpf}");
+
                     pessoa.ObterAtendimento().ForEach(atendimento =>
                     {
                         MostrarAtendimento(atendimento);
@@ -303,26 +284,12 @@ namespace ClinicaOdontologica.view
             atendimento.ObterProcedimentos().ForEach(procedimento =>
             {
 
-                Console.WriteLine($"{atendimento.Data} | {procedimento.Codigo} | {procedimento.Nome} | {procedimento.Preco}");
+                Console.WriteLine($"{procedimento.Data} | {procedimento.Codigo} | {procedimento.Nome} | {procedimento.Preco}");
             });
 
-            ObterValorTotal(atendimento);
+            Console.WriteLine($"Total: {atendimento.ObterValorTotal()}");
             Console.WriteLine("-------------------------------------------");
 
-        }
-
-        public void ObterValorTotal(Atendimento atendimento)
-        {
-            if (typeof(AtendimentoConvencional).IsInstanceOfType(atendimento))
-            {
-                AtendimentoConvencional convencional = (AtendimentoConvencional) atendimento;
-                Console.WriteLine($"Total: {convencional.ObterValorTotal()} | Sem Desconto");
-
-            } else
-            {
-                AtendimentoFidelidade fidelidade = (AtendimentoFidelidade) atendimento;
-                Console.WriteLine($"Total: {fidelidade.ObterValorTotal()} | Desconto de 2%");
-            }
         }
 
     }

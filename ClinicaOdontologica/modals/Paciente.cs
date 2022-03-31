@@ -6,7 +6,7 @@ namespace ClinicaOdontologica.modals
     {
         private List<Atendimento> atendimentos;
 
-        public Paciente(string cpf, string nome, string telefone, bool fidelidade) : base(cpf, nome, telefone, fidelidade)
+        public Paciente(string cpf, string nome, string telefone) : base(cpf, nome, telefone)
         {
             this.atendimentos = new List<Atendimento>();
         }

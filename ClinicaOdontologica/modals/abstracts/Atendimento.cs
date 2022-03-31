@@ -4,12 +4,9 @@
     {
         protected List<Procedimento> procedimentos;
 
-        public DateTime Data { get; }
-
         public Atendimento()
         {
             procedimentos = new List<Procedimento>();
-            Data = DateTime.Now;
         }
 
         public void AddProcedimento(Procedimento procedimento)
