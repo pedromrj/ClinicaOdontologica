@@ -243,39 +243,49 @@ namespace ClinicaOdontologica.view
 
         public void ObterAtendimentos()
         {
-            Console.Clear();
-            Console.WriteLine("||||||Obter os Atendimentos por CPF||||||");
-            MostrarPaciente();
-
-            while (true)
+            try
             {
-                try
+                ValidaAtendimento();
+
+                Console.Clear();
+                Console.WriteLine("||||||Obter os Atendimentos por CPF||||||");
+                MostrarPaciente();
+
+                while (true)
                 {
-                    Console.WriteLine("Qual CPF gostaria de pesquisar: ");
-                    string? cpf = Console.ReadLine();
+                    try
+                    {
+                        Console.WriteLine("Qual CPF gostaria de pesquisar: ");
+                        string? cpf = Console.ReadLine();
 
-                    Paciente pessoa = servico.ObterPaciente(cpf);
+                        Paciente pessoa = servico.ObterPaciente(cpf);
 
-                    Console.Clear();
+                        Console.Clear();
 
-                    Console.WriteLine($"Lista de atendimento para o CPF: {cpf}");
+                        Console.WriteLine($"Lista de atendimento para o CPF: {cpf}");
 
-                    pessoa.ObterAtendimento().ForEach(atendimento => { MostrarAtendimento(atendimento); });
+                        pessoa.ObterAtendimento().ForEach(atendimento => { MostrarAtendimento(atendimento); });
 
-                    Console.WriteLine("Todos os Atendimento foram listados!");
-                    Console.ReadLine();
-                    break;
+                        Console.WriteLine("Todos os Atendimento foram listados!");
+                        Console.ReadLine();
+                        break;
+                    }
+                    catch (NaoEncontradoException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.ReadLine();
+                    }
+                    catch (PacienteNaoEncontradoException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.ReadLine();
+                    }
                 }
-                catch (NaoEncontradoException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    Console.ReadLine();
-                }
-                catch (PacienteNaoEncontradoException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    Console.ReadLine();
-                }
+            }
+            catch (NaoEncontradoException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
             }
         }
 
