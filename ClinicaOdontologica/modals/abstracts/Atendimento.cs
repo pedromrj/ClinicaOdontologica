@@ -1,6 +1,6 @@
 ﻿namespace ClinicaOdontologica.modals.abstracts
 {
-    public class Atendimento
+    public abstract class Atendimento
     {
         protected List<Procedimento> procedimentos;
 
