@@ -7,8 +7,7 @@ namespace ClinicaOdontologica.view
 {
     public class Janela
     {
-
-        private Clinica servico; 
+        private Clinica servico;
 
         public Janela()
         {
@@ -25,18 +24,18 @@ namespace ClinicaOdontologica.view
                     Menu();
                     options = int.Parse(Console.ReadLine());
                     FazerAcao(options);
-                } catch (ComandoNaoEncontradoException ex)
+                }
+                catch (ComandoNaoEncontradoException ex)
                 {
                     Console.WriteLine(ex.Message);
                     Console.ReadLine();
-                } catch (FormatException ex)
+                }
+                catch (FormatException ex)
                 {
                     Console.WriteLine("Valor invalido para o comando!");
                     Console.ReadLine();
                 }
-
             } while (options != 0);
-
         }
 
         public void Menu()
@@ -70,12 +69,11 @@ namespace ClinicaOdontologica.view
                     break;
                 default:
                     throw new ComandoNaoEncontradoException("Comando não encontrado!");
-
             }
         }
 
         public void AddPaciente()
-        {   
+        {
             try
             {
                 Console.Clear();
@@ -89,13 +87,13 @@ namespace ClinicaOdontologica.view
                 servico.AddPaciente(new Paciente(cpf, nome, telefone));
                 Console.WriteLine("Paciente adicionado com sucesso!");
                 Console.ReadLine();
-            } catch (ParametroInvalidoException ex)
+            }
+            catch (ParametroInvalidoException ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.ReadLine();
                 AddPaciente();
-            } 
-            
+            }
         }
 
         public void AddProcedimento()
@@ -106,7 +104,7 @@ namespace ClinicaOdontologica.view
             string nome = Console.ReadLine();
             double preco = ObterPreco();
 
-            servico.AddProcedimento(new Procedimento(nome,preco));
+            servico.AddProcedimento(new Procedimento(nome, preco));
             Console.WriteLine("Procedimento adicionado com sucesso!");
             Console.ReadLine();
         }
@@ -120,7 +118,8 @@ namespace ClinicaOdontologica.view
                     Console.WriteLine("Qual o preco do procedimento: ");
                     double preco = double.Parse(Console.ReadLine());
                     return preco;
-                } catch (FormatException ex)
+                }
+                catch (FormatException ex)
                 {
                     Console.WriteLine("Comando Invalido!");
                     Console.ReadLine();
@@ -130,7 +129,7 @@ namespace ClinicaOdontologica.view
 
         public string PreencherCpf()
         {
-            while(true)
+            while (true)
             {
                 try
                 {
@@ -140,76 +139,87 @@ namespace ClinicaOdontologica.view
                     Paciente paciente = servico.ObterPaciente(cpf);
 
                     return cpf;
-                } catch (NaoEncontradoException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    Console.ReadLine();
-                } catch (PacienteNaoEncontradoException ex)
+                }
+                catch (NaoEncontradoException ex)
                 {
                     Console.WriteLine(ex.Message);
                     Console.ReadLine();
                 }
-
+                catch (PacienteNaoEncontradoException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.ReadLine();
+                }
             }
-            
         }
 
         public void AddAtendimento()
         {
-            Console.Clear();
-            Console.WriteLine("||||||Adicionar Atendimento||||||");
-            MostrarPaciente();
-            string cpf = PreencherCpf();
-
-            List<int> procedimentos = new List<int>();
-            
-            while( true)
+            try
             {
-                try
+                Console.Clear();
+
+                ValidaAtendimento();
+
+                Console.WriteLine("||||||Adicionar Atendimento||||||");
+                MostrarPaciente();
+                string cpf = PreencherCpf();
+                List<int> procedimentos = new List<int>();
+
+                while (true)
                 {
-                    Console.Clear();
-                    Console.WriteLine("||||||Adicionar Atendimento||||||");
-                    MostrarProcedimentos();
-                    Console.WriteLine("Digite o codigo do procedimento que deseja: ");
-                    int codigo = int.Parse(Console.ReadLine());
-                    
-                    servico.ObterProcedimentos(codigo);
+                    try
+                    {
+                        Console.Clear();
+                        Console.WriteLine("||||||Adicionar Atendimento||||||");
+                        MostrarProcedimentos();
+                        Console.WriteLine("Digite o codigo do procedimento que deseja: ");
+                        int codigo = int.Parse(Console.ReadLine());
 
-                    if (procedimentos.Contains(codigo))
-                    {
-                        Console.WriteLine("Não é possivel adicionar procedimentos duplicados!");
-                    } else
-                    {
-                        procedimentos.Add(codigo);
+                        servico.ObterProcedimentos(codigo);
+
+                        if (procedimentos.Contains(codigo))
+                        {
+                            Console.WriteLine("Não é possivel adicionar procedimentos duplicados!");
+                        }
+                        else
+                        {
+                            procedimentos.Add(codigo);
+                        }
+
+                        Console.WriteLine("Gostaria de adicionar outro procedimento (1 - Sim ou 0 - Não): ");
+                        int? proximo = int.Parse(Console.ReadLine());
+                        if (proximo.Equals(0))
+                        {
+                            break;
+                        }
+
+                        if (proximo > 1 || proximo < 0)
+                        {
+                            throw new FormatException();
+                        }
                     }
-
-                    Console.WriteLine("Gostaria de adicionar outro procedimento (1 - Sim ou 0 - Não): ");
-                    int? proximo = int.Parse(Console.ReadLine());
-                    if (proximo.Equals(0))
+                    catch (FormatException ex)
                     {
-                        break;
+                        Console.WriteLine("Comando invalido ou codigo invalido!");
+                        Console.ReadLine();
                     }
-
-                    if (proximo > 1 || proximo < 0)
+                    catch (NaoEncontradoException ex)
                     {
-                        throw new FormatException();
+                        Console.WriteLine("Procedimento não encontrado!");
+                        Console.ReadLine();
                     }
-                } catch (FormatException ex)
-                {
-                    Console.WriteLine("Comando invalido ou codigo invalido!");
-                    Console.ReadLine();
+                }
 
-                } catch (NaoEncontradoException ex)
-                {
-                    Console.WriteLine("Procedimento não encontrado!");
-                    Console.ReadLine();
-                } 
-
+                servico.AddAtendimento(cpf, procedimentos);
+                Console.WriteLine("Atendimento adicionado com sucesso!");
+                Console.ReadLine();
             }
-
-            servico.AddAtendimento(cpf, procedimentos);
-            Console.WriteLine("Atendimento adicionado com sucesso!");
-            Console.ReadLine();
+            catch (NaoEncontradoException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+            }
         }
 
         public void MostrarPaciente()
@@ -217,10 +227,7 @@ namespace ClinicaOdontologica.view
             List<Pessoa> pessoas = servico.ObterPaciente();
             Console.WriteLine("||||||Todos os pacientes||||||");
             Console.WriteLine("CPF | NOME | TELEFONE");
-            pessoas.ForEach(pessoa =>
-            {
-                Console.WriteLine($"{pessoa.Cpf} | {pessoa.Nome} | {pessoa.Telefone}");
-            });
+            pessoas.ForEach(pessoa => { Console.WriteLine($"{pessoa.Cpf} | {pessoa.Nome} | {pessoa.Telefone}"); });
         }
 
         public void MostrarProcedimentos()
@@ -235,16 +242,15 @@ namespace ClinicaOdontologica.view
         }
 
         public void ObterAtendimentos()
-        {   
+        {
             Console.Clear();
             Console.WriteLine("||||||Obter os Atendimentos por CPF||||||");
             MostrarPaciente();
-            
-            while(true)
+
+            while (true)
             {
                 try
                 {
-
                     Console.WriteLine("Qual CPF gostaria de pesquisar: ");
                     string? cpf = Console.ReadLine();
 
@@ -254,10 +260,7 @@ namespace ClinicaOdontologica.view
 
                     Console.WriteLine($"Lista de atendimento para o CPF: {cpf}");
 
-                    pessoa.ObterAtendimento().ForEach(atendimento =>
-                    {
-                        MostrarAtendimento(atendimento);
-                    });
+                    pessoa.ObterAtendimento().ForEach(atendimento => { MostrarAtendimento(atendimento); });
 
                     Console.WriteLine("Todos os Atendimento foram listados!");
                     Console.ReadLine();
@@ -274,7 +277,6 @@ namespace ClinicaOdontologica.view
                     Console.ReadLine();
                 }
             }
-
         }
 
         public void MostrarAtendimento(Atendimento atendimento)
@@ -283,14 +285,18 @@ namespace ClinicaOdontologica.view
             Console.WriteLine("Data do atendimento | Código | Nome | Preço");
             atendimento.ObterProcedimentos().ForEach(procedimento =>
             {
-
-                Console.WriteLine($"{procedimento.Data} | {procedimento.Codigo} | {procedimento.Nome} | {procedimento.Preco}");
+                Console.WriteLine(
+                    $"{procedimento.Data} | {procedimento.Codigo} | {procedimento.Nome} | {procedimento.Preco}");
             });
 
             Console.WriteLine($"Total: {atendimento.ObterValorTotal()}");
             Console.WriteLine("-------------------------------------------");
-
         }
 
+        public void ValidaAtendimento()
+        {
+            if (!servico.ObterPaciente().Any() || !servico.ObterProcedimentos().Any())
+                throw new NaoEncontradoException("Lista  de pacientes ou procedimentos está vazia");
+        }
     }
 }
